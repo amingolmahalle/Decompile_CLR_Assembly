@@ -1,0 +1,27 @@
+﻿steps:
+1- Build Exporter Project and Create DLL
+2-Copy DLL to Database server ex: d:\testclr.dll
+3- Add DLL to database assembly:
+ CREATE ASSEMBLY TestClr
+AUTHORIZATION [dbo]
+FROM 'd:\TestClr.dll'
+WITH PERMISSION_SET = EXTERNAL_ACCESS;
+GO
+
+4-Create Procedure from assembly
+
+CREATE PROCEDURE [usp_SaveAssembly] (
+ @assemblyName [nvarchar](128),  --Assembly Name
+ @destinationPath [nvarchar](256) --Destination path for export
+)  
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [TestClr].[TestClr.AssemblyExporter].[SaveAssembly]
+GO
+
+5-run this procedure
+ usp_SaveAssembly 'wwweofficesqllib','e:\hos'
+
+
+//
+https://www.mssqltips.com/sqlservertip/3126/exporting-clr-assemblies-from-sql-server-back-to-dll-files/

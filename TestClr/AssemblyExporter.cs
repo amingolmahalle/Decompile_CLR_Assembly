@@ -45,7 +45,6 @@ namespace TestClr
                         }
                     }
                 }
-
                 conn.Close();
             }
         }
